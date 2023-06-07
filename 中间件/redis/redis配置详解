@@ -1,0 +1,39 @@
+# redis 一主master两从slave三哨兵sentinel配置详解
+
+- 主服务器： 192.1.1.0
+- 哨兵服务器： 192.1.1.1
+- 哨兵服务器： 192.1.1.2
+
+## redis.conf
+
+```shell
+# 主节点配置
+daemonize yes # 是否以守护进程的方式运行
+pidfile /var/run/redis_6379.pid # pid文件位置
+port 6379 # 端口号
+bind 192.1.1.0 # 绑定的ip
+
+slaveof 192.1.1.1 7000
+```
+
+## sentinel.conf 配置文件
+
+```shell
+# 哨兵节点配置
+daemonize yes # 是否以守护进程的方式运行
+pidfile /var/run/redis_6379.pid # pid文件位置
+port 6379 # 端口号
+bind 192.1.1.1 # 绑定的ip
+loglevel notice # 日志级别
+logfile "/var/log/redis_6379.log" # 日志文件位置
+sentinel monitor mymaster 192.1.1.1 7000 2 # 监控的主节点名称、ip、端口、quorum
+
+sentinel known-slave mymaster 192.1.1.1 # 已知的从节点
+sentinel known-sentinel mymaster # 已知的哨兵节点
+sentinel known-sentinel mymaster # 已知的哨兵节点
+dir /var/lib/redis # 数据库文件位置
+sentinel down-after-milliseconds mymaster 30000 # 多少毫秒后主节点没有响应，就认为主节点挂掉了
+sentinel failover-timeout mymaster 180000 # 多少毫秒后，哨兵节点才会进行故障转移
+sentinel parallel-syncs mymaster 1 # 故障转移时，最多可以有多少个从节点同时对新的主节点进行同步
+sentinel auth-pass mymaster 123456 # 主节点的密码
+```
