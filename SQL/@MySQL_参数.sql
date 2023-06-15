@@ -36,3 +36,10 @@ set global max_allowed_packet = (1024*1024*1024)
 -- 自增主键 初始值设置
 -- alter table ob_tradingconfigdb.t_ors_special_order_routing AUTO_INCREMENT = 12;
 -- truncate table ob_tradingconfigdb.t_ors_special_order_routing;
+
+
+-- MySQL 执行 select now() 显示比当前时区的时间早了8小时，怎么排查这个问题？
+
+SELECT @@global.time_zone, @@session.time_zone;
+
+SET time_zone = 'Asia/Shanghai';  -- 将时区设置为上海，可根据实际情况选择合适的时区
