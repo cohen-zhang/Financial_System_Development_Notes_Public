@@ -4,6 +4,13 @@
 - 哨兵服务器： 192.1.1.1
 - 哨兵服务器： 192.1.1.2
 
+## 使用 redis-cli 连接本地 redis 查看和修改 key 值
+
+```shell
+redis-cli -h 127.0.0.1 -p 6379 -a 123456
+```
+
+
 ## redis.conf
 
 ```shell
