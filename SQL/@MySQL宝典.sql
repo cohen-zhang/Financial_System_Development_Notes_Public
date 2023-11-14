@@ -51,6 +51,9 @@ KILL 2104;
 SELECT * from performance_schema.events_statements_current where sql_text like '%t_dict_category%';
 
 
+-- 死锁
+show engine innodb status
+
 select * from information_schema.PROCESSLIST where info is not null;
 
 
